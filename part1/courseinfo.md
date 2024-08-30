@@ -1,8 +1,33 @@
 The following code-block will be rendered as a Mermaid diagram:
 
 ```mermaid
-flowchart LR
-  A --> B
+sequenceDiagram
+      participant browser
+      participant server
+
+      browser->>server: HTTP POST server address new_note
+      activate server
+      server-->>browser: HTTP status code 302 
+      deactivate server
+
+      Note right of browser: URL redirect, server asks browser to perfrom a new HTTP GET request to the address defined in header's Location - the address notes 
+
+      browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+      activate server
+      server-->>browser: the CSS file 
+      deactivate server
+
+      browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+      activate server
+      server-->>browser: the JavaScript file 
+      deactivate server
+
+      browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+      activate server
+      server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+      deactivate server
+
+
 ```
 
 ```mermaid
