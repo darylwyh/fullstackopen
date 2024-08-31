@@ -1,74 +1,63 @@
-const Footer = () => {
-  return (
-    <div>
-      greeting app created by <a href='https://github.com/mluukkai'>mluukkai</a>
-    </div>
-  )
-}
-
-const Hello = (props) => {
-  console.log(props)
-  return (
-    <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
-    </div>
-  )
-}
-
 const App = () => {
-  const friends = [
-    { name: 'Peter', age: 4 },
-    { name: 'Maya', age: 10 },
-  ]
+  const course = 'Half Stack application development'
+  const part1 = 'Fundamentals of React'
+  const exercises1 = 10
+  const part2 = 'Using props to pass data'
+  const exercises2 = 7
+  const part3 = 'State of a component'
+  const exercises3 = 14
 
   return (
     <div>
-      <p>{friends[0].name} {friends[0].age}</p>
-      <p>{friends[1].name} {friends[1].age}</p>
+      <Header course={course} />
+      <Content 
+        parts={[
+          { part: part1, exercises: exercises1 },
+          { part: part2, exercises: exercises2 },
+          { part: part3, exercises: exercises3 }
+        ]}
+      />
+      <Total numTotal={exercises1 + exercises2 + exercises3}/>
+    </div>
+  )
+
+}
+
+const Header = (props) => {
+  //rendering name of the course 
+  return (
+    <div>
+      <h1> Course is {props.course} </h1>
+    </div>
+  )
+}
+
+const Content = (props) => {
+  //render the parts and their number of exercises 
+  return (
+    <div>
+       <Part part={props.parts[0].part} exercises={props.parts[0].exercises} />
+       <Part part={props.parts[1].part} exercises={props.parts[1].exercises} />
+       <Part part={props.parts[2].part} exercises={props.parts[2].exercises} />
+    </div>
+  )
+}
+
+const Part = (props) => {
+  // Render the name of the part and number of exercises
+  return (
+    <div>
+      <p>{props.part} {props.exercises}</p>
+    </div>
+  );
+}
+const Total = (props) => {
+  //render total number of exercises 
+  return (
+    <div>
+      <p>Number of exercises {props.numTotal}</p> 
     </div>
   )
 }
 
 export default App
-
-
-
-/*
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
-*/
