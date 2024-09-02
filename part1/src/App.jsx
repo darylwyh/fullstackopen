@@ -30,37 +30,25 @@ const History = (props) => {
 }
 
 const App = () => {
-  // useState only called from inside of a function body that defines a React component
-  const [left, setLeft] = useState(0)  
-  const [right, setRight] = useState(0) 
-  const [allClicks, setAll] = useState([])
-  const [total, setTotal] = useState(0) 
-
-  const handleLeftClick = () => {
-    setAll(allClicks.concat('L'))
-    // DON'T allCilcks.push('L')
-    // asychronous, bug 
-    const updatedLeft = left + 1
-    setLeft(updatedLeft)
-    setTotal(updatedLeft + right) 
-  }
-
-
-  const handleRightClick = () => {
-    setAll(allClicks.concat('R'));
-    const updatedRight = right + 1;
-    setRight(updatedRight);
-    setTotal(left + updatedRight);
+  const [value, setValue] = useState(10)
+  
+  const setToValue = (newValue) => {
+    console.log('value now', newValue)
+    setValue(newValue)
   }
 
   return (
     <div>
-      {left}
-      <Button handleClick={handleLeftClick} text='left' />
-      <Button handleClick={handleRightClick} text='right' />
-      {right}
-
-      <History allClicks={allClicks} />
+      {value}
+      <button onClick={() => setToValue(1000)}>
+        thousand
+      </button>
+      <button onClick={() => setToValue(0)}>
+        reset
+      </button>
+      <button onClick={() => setToValue(value + 1)}>
+        increment
+      </button>
     </div>
   )
 }
@@ -114,6 +102,22 @@ export default App
 
 
 /*
+
+const setToValue = (newValue) => () => {
+    console.log('value now', newValue)  // print the new value to console
+    setValue(newValue)
+  }
+  
+  return (
+    <div>
+      {value}
+      <button onClick={setToValue(1000)}>thousand</button>
+      <button onClick={setToValue(0)}>reset</button>
+      <button onClick={setToValue(value + 1)}>increment</button>
+    </div>
+  )
+
+
 debugger 
 
  const [clicks, setClicks] = useState({
