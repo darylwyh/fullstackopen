@@ -1,105 +1,19 @@
 import { useState } from 'react'
 
-const Hello = ({ name, age }) => {
- // const { name, age } = props
-  const bornYear = () => new Date().getFullYear() - age
- 
-  return (
-    <div> 
-      <p>Hello {name}, you are {age} years old</p> 
-      <p>So you were probably born in {bornYear()}</p>
-
-    </div>
-  )
-}
-
-const History = (props) => {
-  //conditional rendering 
-  if (props.allClicks.length === 0) {
-    return (
-      <div>
-        the app is used by pressing the buttons
-      </div>
-    )
-  }
-  return (
-    <div>
-      button press history: {props.allClicks.join(' ')}
-    </div>
-  )
-}
-
 const App = () => {
-  const [value, setValue] = useState(10)
-  
-  const setToValue = (newValue) => {
-    console.log('value now', newValue)
-    setValue(newValue)
-  }
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
   return (
     <div>
-      {value}
-      <button onClick={() => setToValue(1000)}>
-        thousand
-      </button>
-      <button onClick={() => setToValue(0)}>
-        reset
-      </button>
-      <button onClick={() => setToValue(value + 1)}>
-        increment
-      </button>
+      code here
     </div>
   )
 }
 
-const Display = ({ counter }) => <div>{counter}</div>
-
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
-const Header = (props) => {
-  //rendering name of the course 
-  return (
-    <div>
-      <h1> Course is {props.course} </h1>
-    </div>
-  )
-}
-
-const Content = (props) => {
-  return (
-    <div>
-      {props.parts.map((part, index) => (
-        <Part key={index} name={part.name} exercises={part.exercises} />
-      ))}
-    </div>
-  );
-} 
-
-
-const Part = (props) => {
-  // Render the name of the part and number of exercises
-  return (
-    <div>
-      <p>{props.name} {props.exercises}</p>
-    </div>
-  );
-}
-
-const Total = (props) => {
-  const totalExercises = props.parts.reduce((sum, part) => sum + part.exercises, 0);
-
-  return (
-    <div>
-      <p>Total number of exercises {totalExercises}</p>
-    </div>
-  );
-}
 export default App
-
 
 /*
 
