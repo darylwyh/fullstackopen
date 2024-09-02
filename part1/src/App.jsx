@@ -1,5 +1,46 @@
-const App = () => {
-  const course = {
+import { useState } from 'react'
+
+const Hello = ({ name, age }) => {
+ // const { name, age } = props
+  const bornYear = () => new Date().getFullYear() - age
+ 
+  return (
+    <div> 
+      <p>Hello {name}, you are {age} years old</p> 
+      <p>So you were probably born in {bornYear()}</p>
+
+    </div>
+  )
+}
+
+const App = () => { 
+  const [ counter, setCounter ] = useState(0)
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    2000
+  )
+
+  console.log('rendering...', counter)
+ 
+  return (
+    <div>{counter}</div>
+  )
+}
+
+/*
+  // const { name, age } = props
+const name = 'Peter'
+  const age = 10
+
+  return (
+    <div>
+      <h1>Greetings</h1>
+      <Hello name="Maya" age={26 + 10} />
+      <Hello name={name} age={age} />
+    </div>
+  )
+const course = {
     name: 'Half Stack application development',
     parts: [
       {
@@ -24,10 +65,6 @@ const App = () => {
       <Total parts={course.parts} />
     </div>
   )
-
-}
-
-/*
 <Content 
         parts={[
           { part: part1, exercises: exercises1 },
@@ -35,6 +72,11 @@ const App = () => {
           { part: part3, exercises: exercises3 }
         ]}
 /> 
+
+const ref = arto.doAddition  
+storing a method reference, call method through variable 
+value of "this" is defined based on how the method is called, becomes global object 
+setTimeout(arto.greet.bind(arto), 1000)
 */
 
 const Header = (props) => {
