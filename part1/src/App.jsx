@@ -15,8 +15,98 @@ const Hello = ({ name, age }) => {
 
 const App = () => { 
   const [ counter, setCounter ] = useState(0)
+    
+  console.log('rendering with counter value', counter) 
+  const increaseByOne = () => {
+    console.log('increasing, value before', counter)
+    setCounter(counter + 1)
+  } 
+  const decreaseByOne = () => { 
+    console.log('decreasing, value before', counter)
+    setCounter(counter - 1)
+  } 
+  const setToZero = () => {
+    console.log('resetting to zero, value before', counter)
+    setCounter(0)
+  } 
+  return (
+    <div>
+      <Display counter={counter}/>
+      <Button
+        onClick={increaseByOne}
+        text='plus'
+      />
+      <Button
+        onClick={setToZero}
+        text='zero'
+      />     
+      <Button
+        onClick={decreaseByOne}
+        text='minus'
+      />   
+    </div>
+  )
+}
 
-  setTimeout(
+const Display = ({ counter }) => <div>{counter}</div>
+
+const Button = ({ onSmash, text }) => <button onClick={onSmash}>{text}</button>
+
+const Header = (props) => {
+  //rendering name of the course 
+  return (
+    <div>
+      <h1> Course is {props.course} </h1>
+    </div>
+  )
+}
+
+const Content = (props) => {
+  return (
+    <div>
+      {props.parts.map((part, index) => (
+        <Part key={index} name={part.name} exercises={part.exercises} />
+      ))}
+    </div>
+  );
+} 
+
+
+const Part = (props) => {
+  // Render the name of the part and number of exercises
+  return (
+    <div>
+      <p>{props.name} {props.exercises}</p>
+    </div>
+  );
+}
+
+const Total = (props) => {
+  const totalExercises = props.parts.reduce((sum, part) => sum + part.exercises, 0);
+
+  return (
+    <div>
+      <p>Total number of exercises {totalExercises}</p>
+    </div>
+  );
+}
+export default App
+
+
+/*
+{props.parts.map((part, index) => (
+        <Part key={index} name={part.name} exercises={part.exercises} />
+      ))}
+<div>
+      <Part part={props.parts[0].part} exercises={props.parts[0].exercises} />
+      <Part part={props.parts[1].part} exercises={props.parts[1].exercises} />
+      <Part part={props.parts[2].part} exercises={props.parts[2].exercises} />
+    </div>
+*/
+
+/*
+
+ setTimeout(
     () => setCounter(counter + 1),
     2000
   )
@@ -26,9 +116,6 @@ const App = () => {
   return (
     <div>{counter}</div>
   )
-}
-
-/*
   // const { name, age } = props
 const name = 'Peter'
   const age = 10
@@ -78,53 +165,3 @@ storing a method reference, call method through variable
 value of "this" is defined based on how the method is called, becomes global object 
 setTimeout(arto.greet.bind(arto), 1000)
 */
-
-const Header = (props) => {
-  //rendering name of the course 
-  return (
-    <div>
-      <h1> Course is {props.course} </h1>
-    </div>
-  )
-}
-
-const Content = (props) => {
-  return (
-    <div>
-      {props.parts.map((part, index) => (
-        <Part key={index} name={part.name} exercises={part.exercises} />
-      ))}
-    </div>
-  );
-} 
-
-/*
-{props.parts.map((part, index) => (
-        <Part key={index} name={part.name} exercises={part.exercises} />
-      ))}
-<div>
-      <Part part={props.parts[0].part} exercises={props.parts[0].exercises} />
-      <Part part={props.parts[1].part} exercises={props.parts[1].exercises} />
-      <Part part={props.parts[2].part} exercises={props.parts[2].exercises} />
-    </div>
-*/
-
-const Part = (props) => {
-  // Render the name of the part and number of exercises
-  return (
-    <div>
-      <p>{props.name} {props.exercises}</p>
-    </div>
-  );
-}
-
-const Total = (props) => {
-  const totalExercises = props.parts.reduce((sum, part) => sum + part.exercises, 0);
-
-  return (
-    <div>
-      <p>Total number of exercises {totalExercises}</p>
-    </div>
-  );
-}
-export default App
