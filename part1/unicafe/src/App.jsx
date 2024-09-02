@@ -10,29 +10,28 @@ const App = () => {
   const increaseNeutral = () => setNeutral(neutral + 1)
   const increaseBad = () => setBad(bad + 1)
 
+  const total = good + neutral + bad;
+  const score = good * 1 + neutral * 0 + bad * -1; 
+  const average = total === 0 ? 0 : score / total;
+  const positivePercentage = total === 0 ? 0 : (good / total) * 100;
+
   return (
-    <div> 
+    <div>
       <h1>give feedback</h1>
-      <Button
-        onClick={increaseGood}
-        text='good'
-      />
-      <Button
-        onClick={increaseNeutral}
-        text='neutral'
-      />    
-      <Button
-        onClick={increaseBad}
-        text='bad'
-      />   
+      <Button onClick={increaseGood} text='good' />
+      <Button onClick={increaseNeutral} text='neutral' />
+      <Button onClick={increaseBad} text='bad' />
       <h1>statistics</h1>
       <Display text='good' counter={good} />
-      <Display text='neutral' counter={neutral} /> 
+      <Display text='neutral' counter={neutral} />
       <Display text='bad' counter={bad} />
+      <Display text='all' counter={total} />
+      <Display text='average' counter={average} />
+      <Display text='positive' counter={`${positivePercentage.toFixed(2)}%`} />
     </div>
   )
 }
- 
+
 const Button = (props) => {
   return (
     <button onClick={props.onClick}>
