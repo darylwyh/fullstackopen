@@ -13,42 +13,65 @@ const Hello = ({ name, age }) => {
   )
 }
 
-const App = () => { 
-  const [clicks, setClicks] = useState({
-    left: 0, right: 0
-  })
+const History = (props) => {
+  //conditional rendering 
+  if (props.allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+  return (
+    <div>
+      button press history: {props.allClicks.join(' ')}
+    </div>
+  )
+}
+
+const App = () => {
+  // useState only called from inside of a function body that defines a React component
+  const [left, setLeft] = useState(0)  
+  const [right, setRight] = useState(0) 
+  const [allClicks, setAll] = useState([])
+  const [total, setTotal] = useState(0) 
 
   const handleLeftClick = () => {
-    const newClicks = { 
-      ...clicks, 
-      left: clicks.left + 1 
-      // react choosing state structure!, don't left++ 
-    }
-    setClicks(newClicks)
+    setAll(allClicks.concat('L'))
+    // DON'T allCilcks.push('L')
+    // asychronous, bug 
+    const updatedLeft = left + 1
+    setLeft(updatedLeft)
+    setTotal(updatedLeft + right) 
   }
-  
+
+
   const handleRightClick = () => {
-    const newClicks = { 
-      ...clicks, 
-      right: clicks.right + 1 
-    }
-    setClicks(newClicks)
+    setAll(allClicks.concat('R'));
+    const updatedRight = right + 1;
+    setRight(updatedRight);
+    setTotal(left + updatedRight);
   }
 
   return (
     <div>
-      {clicks.left}
-      <button onClick={handleLeftClick}>left</button>
-      <button onClick={handleRightClick}>right</button>
-      {clicks.right}
+      {left}
+      <Button handleClick={handleLeftClick} text='left' />
+      <Button handleClick={handleRightClick} text='right' />
+      {right}
+
+      <History allClicks={allClicks} />
     </div>
   )
 }
 
 const Display = ({ counter }) => <div>{counter}</div>
 
-const Button = ({ onSmash, text }) => <button onClick={onSmash}>{text}</button>
-
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
 const Header = (props) => {
   //rendering name of the course 
   return (
@@ -91,6 +114,37 @@ export default App
 
 
 /*
+debugger 
+
+ const [clicks, setClicks] = useState({
+    left: 0, right: 0
+  })
+
+  const handleLeftClick = () => {
+    const newClicks = { 
+      ...clicks, 
+      left: clicks.left + 1 
+      // react choosing state structure!, don't left++
+    }
+    setClicks(newClicks)
+  }
+  
+  const handleRightClick = () => {
+    const newClicks = { 
+      ...clicks, 
+      right: clicks.right + 1 
+    }
+    setClicks(newClicks)
+  }
+
+  return (
+    <div>
+      {clicks.left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {clicks.right}
+    </div>
+  )
 {props.parts.map((part, index) => (
         <Part key={index} name={part.name} exercises={part.exercises} />
       ))}
