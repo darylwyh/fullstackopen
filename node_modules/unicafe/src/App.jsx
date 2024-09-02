@@ -21,15 +21,15 @@ const App = () => {
       <Button onClick={increaseGood} text='good' />
       <Button onClick={increaseNeutral} text='neutral' />
       <Button onClick={increaseBad} text='bad' />
-      
+
       <h1>statistics</h1>
-      <Statistics 
-        good={good} 
-        neutral={neutral} 
-        bad={bad} 
-        total={total} 
-        average={average.toFixed(2)} 
-        positivePercentage={positivePercentage.toFixed(2)} 
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={total}
+        average={average.toFixed(2)}
+        positivePercentage={positivePercentage.toFixed(2)}
       />
     </div>
   )
@@ -62,16 +62,21 @@ const Statistics = (props) => {
       <StatisticLine text='neutral' value={props.neutral} />
       <StatisticLine text='bad' value={props.bad} />
       <StatisticLine text='total' value={props.total} />
-      <StatisticLine text='average score' value={props.average} />
-      <StatisticLine text='positive feedback' value={`${props.positivePercentage}%`} />
+      <StatisticLine text='average ' value={props.average} />
+      <StatisticLine text='positive ' value={`${props.positivePercentage}%`} />
     </div>
   );
 }
 
 const StatisticLine = ({ text, value }) => (
-  <div>
-    {text}: {value}
-  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+    </tbody>
+  </table>
 );
 
 export default App
