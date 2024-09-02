@@ -51,6 +51,11 @@ const Display = (props) => {
 
 // a proper place to define a component
 const Statistics = (props) => {
+  //conditional rendering 
+  if (props.total === 0) {
+    return <p>No feedback given</p>;
+  }
+
   return (
     <div>
       <Display text='good' counter={props.good} />
