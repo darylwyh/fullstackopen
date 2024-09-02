@@ -58,14 +58,20 @@ const Statistics = (props) => {
 
   return (
     <div>
-      <Display text='good' counter={props.good} />
-      <Display text='neutral' counter={props.neutral} />
-      <Display text='bad' counter={props.bad} />
-      <Display text='total' counter={props.total} />
-      <Display text='average score' counter={props.average} />
-      <Display text='positive feedback' counter={`${props.positivePercentage}%`} />
+      <StatisticLine text='good' value={props.good} />
+      <StatisticLine text='neutral' value={props.neutral} />
+      <StatisticLine text='bad' value={props.bad} />
+      <StatisticLine text='total' value={props.total} />
+      <StatisticLine text='average score' value={props.average} />
+      <StatisticLine text='positive feedback' value={`${props.positivePercentage}%`} />
     </div>
   );
 }
+
+const StatisticLine = ({ text, value }) => (
+  <div>
+    {text}: {value}
+  </div>
+);
 
 export default App
