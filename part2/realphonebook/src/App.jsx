@@ -12,7 +12,7 @@ const App = () => {
     
     // Check if the name already exists in the phonebook
     if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
+      alert(`${newName} is already added to the phonebook`); // JS template string 
     } else {
       setPersons(persons.concat(newPerson));
       setNewName(''); // Clear input field
