@@ -4,7 +4,7 @@ import Header from './Header'
 const Course = (props) => {
     console.log(props) 
     const { course } = props
-    const totalExercises = course.parts.reduce((sum, part) => sum + part.exercises, 0);
+    const totalExercises = course.parts.reduce((sum, part) => sum + part.exercises, 0); //2.2 2.3
  
     return (
       <div>
