@@ -25,8 +25,7 @@ const App = () => {
     newVotes[selected] += 1;
     setVotes(newVotes);
   };
-
-
+    
   return (
     <div> 
       <h1>Anecdote of the day</h1>
