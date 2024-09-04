@@ -23,11 +23,27 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
+    const existingPerson = persons.find(person => person.name === newName); 
+    // if (persons.some(person => person.name === newName))
     const newPerson = { name: newName, number: newNumber };
 
     // Check if the name already exists in the phonebook
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to the phonebook`); // JS template string
+    if (existingPerson) {
+      // alert(`${newName} is already added to the phonebook`); // JS template string
+      if (window.confirm(`${newName} is already in the phonebook, replace the old number with a new one?`)) {
+        // Use PUT method to update the person's number
+        personsService
+          .update(existingPerson.id, newPerson)
+          .then(updatedPerson => {
+            setPersons(persons.map(person => person.id !== existingPerson.id ? person : updatedPerson));
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch(error => {
+            alert(`The information of ${newName} has already been removed from the server.`);
+            setPersons(persons.filter(person => person.id !== existingPerson.id)); // Remove from UI
+          });
+      }
     } else {
       personsService
         .create(newPerson)
