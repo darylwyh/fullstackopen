@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import personsService from './services/persons'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -13,11 +13,11 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personsService
+      .getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -29,17 +29,37 @@ const App = () => {
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already added to the phonebook`); // JS template string
     } else {
-
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      personsService
+        .create(newPerson)
+        .then(returnedPersons => {
+          setPersons(persons.concat(returnedPersons))
           setNewName('')
           setNewNumber('') 
         })
+      // axios
+      //   .post('http://localhost:3001/persons', newPerson)
+      //   .then(response => {
+      //     setPersons(persons.concat(response.data))
+      //     setNewName('')
+      //     setNewNumber('') 
+      //   })
       //setPersons(persons.concat(newPerson));
       //setNewName(''); // Clear name input field
       //setNewNumber(''); // Clear number input field
+    }
+  };
+
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personsService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id));
+        })
+        .catch(error => {
+          alert(`The person '${name}' was already deleted from the server`);
+          setPersons(persons.filter(person => person.id !== id)); // Remove from UI
+        });
     }
   };
 
@@ -78,7 +98,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} handleDelete={deletePerson}/>
     </div>
   );
 }
