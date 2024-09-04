@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import noteService from './services/notes'
 import Course from './components/Course'
 import Note from './components/Note'
 
@@ -9,33 +10,39 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
+    noteService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setNotes(response.data)
       })
   }, [])
+
+  const toggleImportanceOf = id => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    noteService
+      .update(id, changedNote)
+      .then(response => {
+        setNotes(notes.map(note => note.id !== id ? note : response.data))
+      })
+  }
 
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
       content: newNote,
-      important: Math.random() < 0.5, // 50% chance of true/false
-      //id: String(notes.length + 1), // omit id, let server do
+      important: Math.random() > 0.5
     }
 
-    axios
-    .post('http://localhost:3001/notes', noteObject)
-    .then(response => {
-      setNotes(notes.concat(response.data))
-      setNewNote('')
-    })
-
-    // setNotes(notes.concat(noteObject))
-    // setNewNote('')
+    noteService
+      .create(noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
   }
+ 
   const handleNoteChange = (event) => {
     console.log(event.target.value)
     setNewNote(event.target.value)
@@ -51,7 +58,7 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note =>
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />
         )}
       </ul>
       <form onSubmit={addNote}>
@@ -65,6 +72,43 @@ const App = () => {
 export default App
 
 /*
+
+const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      content: newNote,
+      important: Math.random() < 0.5, // 50% chance of true/false
+      //id: String(notes.length + 1), // omit id, let server do
+    }
+
+    axios
+      .post('http://localhost:3001/notes', noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
+
+    // setNotes(notes.concat(noteObject))
+    // setNewNote('')
+  }
+const toggleImportanceOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+  
+    axios.put(url, changedNote).then(response => {
+      setNotes(notes.map(n => n.id !== id ? n : response.data))
+    })
+  }
+useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
  const courses = [
     {
       name: 'Half Stack application development',
