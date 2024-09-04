@@ -29,9 +29,17 @@ const App = () => {
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already added to the phonebook`); // JS template string
     } else {
-      setPersons(persons.concat(newPerson));
-      setNewName(''); // Clear name input field
-      setNewNumber(''); // Clear number input field
+
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('') 
+        })
+      //setPersons(persons.concat(newPerson));
+      //setNewName(''); // Clear name input field
+      //setNewNumber(''); // Clear number input field
     }
   };
 
@@ -60,7 +68,7 @@ const App = () => {
 
       <h3>Add a new</h3>
 
-      <PersonForm 
+      <PersonForm
         addPerson={addPerson}
         newName={newName}
         handleNameChange={handleNameChange}
