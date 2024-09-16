@@ -1,35 +1,86 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import './index.css';
+ 
+const App = () => {
+  const [countries, setCountries] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [filteredCountries, setFilteredCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
-function App() {
-  const [count, setCount] = useState(0)
+  // initial fetch, Fetch data from the REST Countries API
+  useEffect(() => {
+    axios
+      .get('https://studies.cs.helsinki.fi/restcountries/api/all')
+      .then(response => {
+        setCountries(response.data);
+      });
+  }, []);
 
-  return (
-    <>
+  // Handle filter change
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  // Filter countries based on user input
+  useEffect(() => {
+    const results = countries.filter(country =>
+      country.name.common.toLowerCase().includes(filter.toLowerCase())
+    );
+    setFilteredCountries(results);
+    if (results.length === 1) {
+      setSelectedCountry(results[0]);
+    } else {
+      setSelectedCountry(null);
+    }
+  }, [filter, countries]);
+
+  // Display country details when exactly one country is matched
+  const CountryDetails = ({ country }) => {
+    return (
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h2>{country.name.common}</h2>
+        <p>Capital: {country.capital}</p>
+        <p>Area: {country.area} km²</p>
+        <h4>Languages:</h4>
+        <ul>
+          {Object.values(country.languages).map(language => (
+            <li key={language}>{language}</li>
+          ))}
+        </ul>
+        <img src={country.flags.png} alt={`Flag of ${country.name.common}`} width="200" />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    );
+  };
+ 
+  return (
+    <div>
+      <h1>Find Countries</h1>
+      <input
+        type="text"
+        value={filter}
+        onChange={handleFilterChange}
+        placeholder="Search for a country"
+      />
+      
+      {filteredCountries.length > 10 && (
+        <p>Too many matches, please specify your search</p>
+      )}
+
+      {filteredCountries.length <= 10 && filteredCountries.length > 1 && (
+        <ul>
+          {filteredCountries.map(country => (
+            <li key={country.cca3}>
+              {country.name.common}
+              <button onClick={() => setSelectedCountry(country)}>Show</button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {selectedCountry && <CountryDetails country={selectedCountry} />}
+    </div>
+  );
+};
 
 export default App
