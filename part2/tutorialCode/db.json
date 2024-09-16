@@ -23,12 +23,12 @@
     {
       "id": "876e",
       "content": "asdcxz",
-      "important": true
+      "important": false
     },
     {
       "id": "9235",
       "content": "asdcxz",
-      "important": false
+      "important": true
     }
   ]
 }
